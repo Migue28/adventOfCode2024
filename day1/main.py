@@ -8,16 +8,16 @@ def main():
             left_list.append(line.split(" ")[0])
             right_list.append(line.split(" ")[3].split('\n')[0])
     
-    left = [int(item) for item in left_list ]
-    right = [int(item) for item in right_list ]
+    lefts = [int(item) for item in left_list ]
+    rights = [int(item) for item in right_list ]
 
-    left.sort()
-    right.sort()
+    lefts.sort()
+    rights.sort()
 
     total = 0
     
-    for i in range(len(left)):
-        total += abs(left[i] - right[i]) 
+    for left, right in zip(lefts, rights):
+        total += abs(left - right) 
 
     print(total)
 
