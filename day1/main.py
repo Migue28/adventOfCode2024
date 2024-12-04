@@ -1,3 +1,5 @@
+from collections import Counter
+
 def main():
     left_list: list[str] = []
     right_list: list[str] = []
@@ -21,12 +23,10 @@ def main():
 
     print(f'Difference total = {total}')
 
-    similary_score = 0
+    right_counts = Counter(rights)
+    similarity_score = sum(left * right_counts[left] for left in lefts)
 
-    for left, right in zip(lefts, rights):
-        similary_score += left * rights.count(left)
-
-    print(f'Similary score = {similary_score}')
+    print(f'Similary score = {similarity_score}')
 
 
 if __name__ == "__main__":
