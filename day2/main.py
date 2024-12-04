@@ -26,14 +26,7 @@ def main():
             else:
                 safety_leap = 0
             
-            if(mayor and minor):
-                mayor = False
-                minor = False
-
-            if(safety_leap > 3):
-                mayor = False
-                minor = False
-            elif(safety_leap < 1):
+            if(mayor and minor or safety_leap > 3 or safety_leap < 1):
                 mayor = False
                 minor = False
 
