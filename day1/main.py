@@ -19,7 +19,14 @@ def main():
     for left, right in zip(lefts, rights):
         total += abs(left - right) 
 
-    print(total)
+    print(f'Difference total = {total}')
+
+    similary_score = 0
+
+    for left, right in zip(lefts, rights):
+        similary_score += left * rights.count(left)
+
+    print(f'Similary score = {similary_score}')
 
 
 if __name__ == "__main__":
