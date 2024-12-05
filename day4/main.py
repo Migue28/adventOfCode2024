@@ -85,25 +85,39 @@ def search_by_letter(data:str):
 
 def search_MAS(data:str):
     crossword = data.split()
-    count = 0
+
+    # diagonals
+    leftRD = 0
+    leftRU = 0
+    rightLD = 0
+    rightLU = 0
 
     for y, word in enumerate(crossword):
         for x, chara in enumerate(word):
-            if chara == 'A':
+            if(chara == 'A'):
+                
+                # Diagonals
+                # left to right down
                 try:
-                    if (y-1 >= 0 and y + 1 < len(crossword) and 
-                        x-1 >= 0 and x + 1 < len(word)):
+                    if((f'{crossword[y-1][x-1]}{crossword[y][x]}{crossword[y+1][x+1]}' == 'SAM' 
+                        or f'{crossword[y-1][x-1]}{crossword[y][x]}{crossword[y+1][x+1]}' == 'MAS') 
+                        and y-1 >= 0 and x-1 >= 0):
+
+                        # left to right up
+
+                        if((f'{crossword[y-1][x+1]}{word[x]}{crossword[y+1][x-1]}' == 'SAM' 
+                            or f'{crossword[y-1][x+1]}{word[x]}{crossword[y+1][x-1]}' == 'MAS') 
+                            and y-1 >= 0 and x-1 >= 0):
+                            leftRU += 1
                         
-                        diagonal1 = f'{crossword[y-1][x-1]}{word[x]}{crossword[y+1][x+1]}'
-                        diagonal2 = f'{crossword[y-1][x+1]}{word[x]}{crossword[y+1][x-1]}'
-                        
-                        if diagonal1 in ['SAM', 'MAS'] and diagonal2 in ['SAM', 'MAS']:
-                            count += 1
                 except IndexError:
                     pass
 
-    print(f'Total diagonal crosses found: {count}')
-    return count
+
+    # print(data)
+    print(f'leftR: {leftRD} rightL: {leftRU} upD: {rightLD} downU: {rightLU}')
+    print(sum([leftRD, leftRU, rightLD, rightLU]))
+
 
 def main():
     data = read_input('data/inputData.txt')
