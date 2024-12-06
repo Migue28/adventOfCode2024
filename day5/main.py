@@ -22,6 +22,25 @@ def count_valid(valid_list: list[bool]) -> bool:
     return False not in valid_list
 
 
+def sort_invalids(
+    rules: list[str], print_value: str, print_line: list[str]
+) -> list[str]:
+    new_print_line = [*print_line]
+
+    current_index = print_line.index(print_value)
+    for index, val in enumerate(print_line):
+        for rule in rules:
+            if val == rule:
+                if current_index < index:
+                    continue
+                else:
+                    old_line = [*new_print_line]
+                    new_print_line[current_index] = old_line[old_line.index(rule)]
+                    new_print_line[print_line.index(rule)] = old_line[current_index]
+
+    return new_print_line
+
+
 def check_rule(rules: list[str], print_value: str, print_line: list[str]) -> bool:
     current_index = print_line.index(print_value)
     valid_list: list[bool] = []
@@ -52,24 +71,49 @@ def check_line(rules: list[str], print_line: str, sort_list: bool = False) -> in
 
     if sort_list:
         if not count_valid(valid_list):
-            print_list.sort(reverse=True)
-            print(
-                f"list {print_list} mid {int(print_list[int((len(print_list) / 2))])}"
-            )
-            return int(print_list[int((len(print_list) / 2))])
+            new_valid_list = [False]
+            sorted_print_list: list[str] = [*print_list]
+            while not count_valid(new_valid_list):
+                new_valid_list: list[bool] = []
+                for i, line in enumerate(print_list):
+                    rule = selected_rules[i]
+                    sorted_print_list: list[str] = sort_invalids(
+                        [
+                            rul.split("|")[1]
+                            for rul in rule
+                            if rul.split("|")[1] != line
+                        ],
+                        line,
+                        sorted_print_list,
+                    )
+                for i, line in enumerate(print_list):
+                    rule = selected_rules[i]
+                    new_valid_list.append(
+                        check_rule(
+                            [
+                                rul.split("|")[1]
+                                for rul in rule
+                                if rul.split("|")[1] != line
+                            ],
+                            line,
+                            sorted_print_list,
+                        )
+                    )
+            return int(sorted_print_list[int((len(print_list) / 2))])
 
     else:
         if count_valid(valid_list):
-            print(f"list {print_list} valid {count_valid(valid_list)}")
             return int(print_list[int((len(print_list) / 2))])
     return 0
 
 
 def main():
-    data = read_input("data/example.txt")
+    data = read_input("data/inputData.txt")
     rules, prints = divide_list(data)
 
-    print(sum([check_line(rules, print_line, True) for print_line in prints]))
+    print(
+        f"Total = {sum([check_line(rules, print_line, True) for print_line in prints])}"
+    )
 
 
 if __name__ == "__main__":
