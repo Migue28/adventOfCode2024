@@ -49,13 +49,19 @@ def check_line(rules: list[str], print_line: str, sort_list: bool = False) -> in
                 print_list,
             )
         )
-    if sort_list and count_valid(valid_list):
-        print_list.sort(reverse=True)
-        print(print_list)
-        return int(print_list[int((len(print_list) / 2))])
 
-    if count_valid(valid_list):
-        return int(print_list[int((len(print_list) / 2))])
+    if sort_list:
+        if not count_valid(valid_list):
+            print_list.sort(reverse=True)
+            print(
+                f"list {print_list} mid {int(print_list[int((len(print_list) / 2))])}"
+            )
+            return int(print_list[int((len(print_list) / 2))])
+
+    else:
+        if count_valid(valid_list):
+            print(f"list {print_list} valid {count_valid(valid_list)}")
+            return int(print_list[int((len(print_list) / 2))])
     return 0
 
 
